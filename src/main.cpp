@@ -336,7 +336,6 @@ int main() {
               y_point = (x_ref * sin(ref_yaw)) + (y_ref*cos(ref_yaw));
               x_point +=ref_x;
               y_point +=ref_y;
-
               next_x_vals.push_back(x_point);
               next_y_vals.push_back(y_point);
             }
