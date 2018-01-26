@@ -237,8 +237,9 @@ int main() {
 
           	// Sensor Fusion Data, a list of all other cars on the same side of the road.
           	auto sensor_fusion = j[1]["sensor_fusion"];
+
           int lane = 1; // Start Lane 1
-          double ref_vel = 49.5; // Miles Per Hour
+          double ref_vel = 0; // Miles Per Hour
           int prev_size = previous_path_x.size();
           	json msgJson;
             // Create a list of evenly spaced (x,y) waypoints.
@@ -255,6 +256,30 @@ int main() {
           double ref_y = car_y;
           double ref_yaw = deg2rad(car_yaw);
 
+        if (previous_size >0){
+          car_s =end_path_s;
+        }
+        bool too_close = false;
+        for (int i=0; i<sensor_fusion.size();i++){
+          float d = sensor_fusion[i][6];
+          if (d<(2+4*lane+2)&&(d>2+4*lane-2)){
+            double vx = sensor_fusion[i][3];
+            double vy = sensor_fusion[i][4];
+            double check_speed = sqrt(vx*vx+vy*vy);
+            double check_car_s = sensor_fusion[i][5];
+            check_car_s +=((double)prev_size*.02*check_speed);
+            if ((check_car_s>car_s)&&check_car_s-car_s <30){
+              too_close=True;
+            }
+          }
+
+        }
+        if(too_close){
+          ref_vel-=.224;
+        }
+        else if (ref_vel<49.5){
+          ref_vel+=.224;
+        }
           // If previous size is almost empty, Use the car as starting reference
           if(prev_size <2){
 
