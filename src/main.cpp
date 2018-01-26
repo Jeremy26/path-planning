@@ -260,6 +260,7 @@ int main() {
           car_s =end_path_s;
         }
         bool too_close = false;
+        
         for (int i=0; i<sensor_fusion.size();i++){
           float d = sensor_fusion[i][6];
           if (d<(2+4*lane+2)&&(d>2+4*lane-2)){
