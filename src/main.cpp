@@ -178,6 +178,8 @@ int main() {
   string map_file_ = "../data/highway_map.csv";
   // The max s value before wrapping around the track back to 0
   double max_s = 6945.554;
+  double ref_vel = 0; // Miles Per Hour
+  int lane = 1; // Start Lane 1
 
   ifstream in_map_(map_file_.c_str(), ifstream::in);
 
@@ -201,7 +203,7 @@ int main() {
   	map_waypoints_dy.push_back(d_y);
   }
 
-  h.onMessage([&map_waypoints_x,&map_waypoints_y,&map_waypoints_s,&map_waypoints_dx,&map_waypoints_dy](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length,
+  h.onMessage([&lane,&ref_vel,&map_waypoints_x,&map_waypoints_y,&map_waypoints_s,&map_waypoints_dx,&map_waypoints_dy](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length,
                      uWS::OpCode opCode) {
     // "42" at the start of the message means there's a websocket message event.
     // The 4 signifies a websocket message
@@ -238,8 +240,6 @@ int main() {
           	// Sensor Fusion Data, a list of all other cars on the same side of the road.
           	auto sensor_fusion = j[1]["sensor_fusion"];
 
-          int lane = 1; // Start Lane 1
-          double ref_vel = 0; // Miles Per Hour
           int prev_size = previous_path_x.size();
           	json msgJson;
             // Create a list of evenly spaced (x,y) waypoints.
@@ -256,7 +256,7 @@ int main() {
           double ref_y = car_y;
           double ref_yaw = deg2rad(car_yaw);
 
-        if (previous_size >0){
+        if (prev_size >0){
           car_s =end_path_s;
         }
         bool too_close = false;
@@ -269,14 +269,18 @@ int main() {
             double check_speed = sqrt(vx*vx+vy*vy);
             double check_car_s = sensor_fusion[i][5];
             check_car_s +=((double)prev_size*.02*check_speed);
-            if ((check_car_s>car_s)&&check_car_s-car_s <30){
-              too_close=True;
+            if ((check_car_s>car_s)&&((check_car_s-car_s) <30)){
+              too_close=true;
             }
           }
 
         }
         if(too_close){
-          ref_vel-=.224;
+          if(lane>0){
+            lane -=1;
+          }
+          else lane+=1;
+          
         }
         else if (ref_vel<49.5){
           ref_vel+=.224;
