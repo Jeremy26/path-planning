@@ -163,6 +163,7 @@ CMakeFiles/path_planning.dir/src/main.cpp.o
  /Users/jeremycohen/SelfDrivingCar/TERM_3/path-planning/src/json.hpp
  /Users/jeremycohen/SelfDrivingCar/TERM_3/path-planning/src/main.cpp
  /Users/jeremycohen/SelfDrivingCar/TERM_3/path-planning/src/spline.h
+ /Users/jeremycohen/SelfDrivingCar/TERM_3/path-planning/src/vehicle.h
  /usr/local/include/pthread-barrier.h
  /usr/local/include/uWS/Extensions.h
  /usr/local/include/uWS/Group.h

@@ -851,6 +851,8 @@ json.hpp
 /Users/jeremycohen/SelfDrivingCar/TERM_3/path-planning/src/json.hpp
 spline.h
 /Users/jeremycohen/SelfDrivingCar/TERM_3/path-planning/src/spline.h
+vehicle.h
+/Users/jeremycohen/SelfDrivingCar/TERM_3/path-planning/src/vehicle.h
 
 /Users/jeremycohen/SelfDrivingCar/TERM_3/path-planning/src/spline.h
 cstdio
@@ -860,6 +862,18 @@ cassert
 vector
 -
 algorithm
+-
+
+/Users/jeremycohen/SelfDrivingCar/TERM_3/path-planning/src/vehicle.h
+iostream
+-
+random
+-
+vector
+-
+map
+-
+string
 -
 
 /usr/local/include/pthread-barrier.h

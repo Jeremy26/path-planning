@@ -9,6 +9,7 @@
 #include "Eigen-3.3/Eigen/QR"
 #include "json.hpp"
 #include "spline.h"
+#include "vehicle.h"
 
 using namespace std;
 
@@ -178,9 +179,11 @@ int main() {
   string map_file_ = "../data/highway_map.csv";
   // The max s value before wrapping around the track back to 0
   double max_s = 6945.554;
-  double ref_vel = 0; // Miles Per Hour
+  double ref_vel = 0.0; // Miles Per Hour
+  double target_velocity = 49.5;
   int lane = 1; // Start Lane 1
-
+  //Vehicle ego = Vehicle(lane,0.0,ref_vel,0.0,"KL");
+  int ego=0;
   ifstream in_map_(map_file_.c_str(), ifstream::in);
 
   string line;
@@ -203,7 +206,7 @@ int main() {
   	map_waypoints_dy.push_back(d_y);
   }
 
-  h.onMessage([&lane,&ref_vel,&map_waypoints_x,&map_waypoints_y,&map_waypoints_s,&map_waypoints_dx,&map_waypoints_dy](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length,
+  h.onMessage([&target_velocity,&ego,&lane,&ref_vel,&map_waypoints_x,&map_waypoints_y,&map_waypoints_s,&map_waypoints_dx,&map_waypoints_dy](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length,
                      uWS::OpCode opCode) {
     // "42" at the start of the message means there's a websocket message event.
     // The 4 signifies a websocket message
@@ -288,7 +291,7 @@ int main() {
             sf_cars.push_back(lane-1);
             //cout << "Vehicle in LEFT LANE"<<endl;
             // If LEFT LANE is FREE
-            if(((check_car_s>car_s) && (check_car_s - car_s >40))||((check_car_s<car_s)&&(car_s-check_car_s >40 )))
+            if(((check_car_s>car_s) && (check_car_s - car_s >40))||((check_car_s<car_s)&&(car_s-check_car_s >20 )))
             {
               if ((!left_is_down) && (!start_loop)) left_free = true;
              // cout << "LEFT IS FREE"<<endl;
@@ -301,7 +304,7 @@ int main() {
             //cout <<"Vehicle in RIGHT LANE"<<endl;
             
             // If RIGHT LANE is FREE
-            if(((check_car_s>car_s) && (check_car_s - car_s >40))||((check_car_s<car_s)&&(car_s-check_car_s >40 )))
+            if(((check_car_s>car_s) && (check_car_s - car_s >40))||((check_car_s<car_s)&&(car_s-check_car_s >20 )))
             {
               if((!right_is_down)&&(!start_loop)){
                 right_free = true;
@@ -396,7 +399,7 @@ int main() {
           double target_x = 30.0;
           double target_y = s(target_x);
           double target_dist = sqrt(target_x*target_x + target_y*target_y);
-          double x_add_on = 0; //Start at the origin
+          double x_add_on = 0; //Start at the origin  
 
           	// TODO: define a path made up of (x,y) points that the car will visit sequentially every .02 seconds
             for (int i =1; i<=50 - previous_path_x.size();i++){
