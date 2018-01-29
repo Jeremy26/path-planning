@@ -182,7 +182,7 @@ int main() {
   double ref_vel = 0.0; // Miles Per Hour
   double target_velocity = 49.5;
   int lane = 1; // Start Lane 1
-  //Vehicle ego = Vehicle(lane,0.0,ref_vel,0.0,"KL");
+  //Vehicle ego = Vehicle(lane,0,ref_vel,0,"KL");
   int ego=0;
   ifstream in_map_(map_file_.c_str(), ifstream::in);
 
@@ -263,13 +263,9 @@ int main() {
           car_s =end_path_s;
         }
         bool too_close = false;
-        bool left_free = false;
-        bool right_free = false;
-        vector<int> sf_cars;
-        bool left_is_down = false;
-        bool right_is_down = false;
-        bool start_loop = true;
-
+        bool left_free = true;
+        bool right_free = true;
+                
         for (int i=0; i<sensor_fusion.size();i++){
           double vx = sensor_fusion[i][3];
           double vy = sensor_fusion[i][4];
@@ -280,7 +276,6 @@ int main() {
 
           // If detected vehicle is in CAR lane
           if (d<(2+4*lane+2)&&(d>4*lane)){
-            sf_cars.push_back(lane);
           // If a car is in our range.
             if ((check_car_s>car_s)&&((check_car_s-car_s) <30)){
               too_close=true; // set STATE to : Current Lane Busy
@@ -288,47 +283,31 @@ int main() {
           }
           // If detected vehicle in in LEFT LANE
           else if ((d<4*lane)&&(d>4*lane-4)){
-            sf_cars.push_back(lane-1);
-            //cout << "Vehicle in LEFT LANE"<<endl;
-            // If LEFT LANE is FREE
-            if(((check_car_s>car_s) && (check_car_s - car_s >40))||((check_car_s<car_s)&&(car_s-check_car_s >20 )))
+            // If LEFT LANE is NOT FREE
+            if(((check_car_s>car_s) && (check_car_s - car_s <30))||((check_car_s<car_s)&&(car_s-check_car_s <20 )))
             {
-              if ((!left_is_down) && (!start_loop)) left_free = true;
-             // cout << "LEFT IS FREE"<<endl;
+              left_free = false;
             }
-            else left_is_down = true;
           }
           // If detected vehicle in in RIGHT LANE
           else if ((d<4*lane+8)&&(d>4*lane+4)){
-            sf_cars.push_back(lane+1);
-            //cout <<"Vehicle in RIGHT LANE"<<endl;
             
-            // If RIGHT LANE is FREE
-            if(((check_car_s>car_s) && (check_car_s - car_s >40))||((check_car_s<car_s)&&(car_s-check_car_s >20 )))
+            // If RIGHT LANE is NOT FREE
+            if(((check_car_s>car_s) && (check_car_s - car_s <30))||((check_car_s<car_s)&&(car_s-check_car_s <20 )))
             {
-              if((!right_is_down)&&(!start_loop)){
-                right_free = true;
-                //cout <<"RIGHT IS FREE"<<endl;
-              }
+                right_free = false;
             }
-            else right_is_down = true;  
           }
-          start_loop = false;
         }
         
         if(too_close){
-          if(left_free){
+          
+          if((left_free)&&(lane>0)){
             lane-=1;
-            cout << "GO LEFT"<<endl;
           }
-          else if(right_free)
-          {
-            lane+=1;
-            cout <<"CAN'T GO LEFT, GO RIGHT"<<endl;
-          }
+          else if ((right_free)&&(lane<2))lane+=1;
           else {
-            ref_vel-=.3;
-            cout <<"CAN'T CHANGE LANE -- SLOW DOWN"<<endl;
+            ref_vel-=.224;
           }
         }
         else if (ref_vel<49.5){

@@ -11,7 +11,7 @@ using namespace std;
 class Vehicle {
 public:
 
-  map<string, int> lane_direction = {{"PLCL", 1}, {"LCL", 1}, {"LCR", -1}, {"PLCR", -1}};
+  map<string, int> lane_direction = {{"PLCL", -1}, {"LCL", -1}, {"LCR", 1}, {"PLCR", 1},{"KL",0}};
 
   struct collider{
 
@@ -34,11 +34,11 @@ public:
 
   double a;
 
-  double target_speed;
+  double target_speed = 49.5;
 
-  int lanes_available;
+  int lanes_available = 3;
 
-  double max_acceleration;
+  double max_acceleration = 10;
 
   int goal_lane;
 

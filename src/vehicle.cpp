@@ -1,10 +1,10 @@
 #include <algorithm>
 #include <iostream>
-#include "vehicle.h"
 #include <cmath>
 #include <map>
 #include <string>
 #include <iterator>
+#include "vehicle.h"
 #include "cost.h"
 
 /**
@@ -14,16 +14,12 @@
 Vehicle::Vehicle(){}
 
 Vehicle::Vehicle(int lane, double s, double v, double a, string state) {
-
     this->lane = lane;
     this->s = s;
     this->d = 4*lane+2;
-    this->target_speed = 49.5;
     this->v = v;
     this->a = a;
     this->state = state;
-    max_acceleration = 10;
-    this->lanes_available = 3;
 }
 
 Vehicle::~Vehicle() {}
@@ -263,7 +259,7 @@ vector<Vehicle> Vehicle::generate_predictions(int horizon) {
       if (i < horizon-1) {
         next_v = position_at(i+1) - s;
       }
-      predictions.push_back(Vehicle(this->lane, next_s, next_v, 0));
+      predictions.push_back(Vehicle(this->lane, next_s, next_v, 0,"KL"));
   	}
     return predictions;
 
