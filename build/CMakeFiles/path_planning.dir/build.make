@@ -43,10 +43,10 @@ RM = /usr/local/Cellar/cmake/3.10.2/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/jeremycohen/SelfDrivingCar/TERM_3/path-planning
+CMAKE_SOURCE_DIR = /Users/j.cohen/path-planning
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/jeremycohen/SelfDrivingCar/TERM_3/path-planning/build
+CMAKE_BINARY_DIR = /Users/j.cohen/path-planning/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/path_planning.dir/depend.make
@@ -59,16 +59,16 @@ include CMakeFiles/path_planning.dir/flags.make
 
 CMakeFiles/path_planning.dir/src/main.cpp.o: CMakeFiles/path_planning.dir/flags.make
 CMakeFiles/path_planning.dir/src/main.cpp.o: ../src/main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/jeremycohen/SelfDrivingCar/TERM_3/path-planning/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/path_planning.dir/src/main.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/path_planning.dir/src/main.cpp.o -c /Users/jeremycohen/SelfDrivingCar/TERM_3/path-planning/src/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/j.cohen/path-planning/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/path_planning.dir/src/main.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/path_planning.dir/src/main.cpp.o -c /Users/j.cohen/path-planning/src/main.cpp
 
 CMakeFiles/path_planning.dir/src/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/path_planning.dir/src/main.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/jeremycohen/SelfDrivingCar/TERM_3/path-planning/src/main.cpp > CMakeFiles/path_planning.dir/src/main.cpp.i
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/j.cohen/path-planning/src/main.cpp > CMakeFiles/path_planning.dir/src/main.cpp.i
 
 CMakeFiles/path_planning.dir/src/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/path_planning.dir/src/main.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/jeremycohen/SelfDrivingCar/TERM_3/path-planning/src/main.cpp -o CMakeFiles/path_planning.dir/src/main.cpp.s
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/j.cohen/path-planning/src/main.cpp -o CMakeFiles/path_planning.dir/src/main.cpp.s
 
 CMakeFiles/path_planning.dir/src/main.cpp.o.requires:
 
@@ -81,17 +81,69 @@ CMakeFiles/path_planning.dir/src/main.cpp.o.provides: CMakeFiles/path_planning.d
 CMakeFiles/path_planning.dir/src/main.cpp.o.provides.build: CMakeFiles/path_planning.dir/src/main.cpp.o
 
 
+CMakeFiles/path_planning.dir/src/vehicle.cpp.o: CMakeFiles/path_planning.dir/flags.make
+CMakeFiles/path_planning.dir/src/vehicle.cpp.o: ../src/vehicle.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/j.cohen/path-planning/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/path_planning.dir/src/vehicle.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/path_planning.dir/src/vehicle.cpp.o -c /Users/j.cohen/path-planning/src/vehicle.cpp
+
+CMakeFiles/path_planning.dir/src/vehicle.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/path_planning.dir/src/vehicle.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/j.cohen/path-planning/src/vehicle.cpp > CMakeFiles/path_planning.dir/src/vehicle.cpp.i
+
+CMakeFiles/path_planning.dir/src/vehicle.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/path_planning.dir/src/vehicle.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/j.cohen/path-planning/src/vehicle.cpp -o CMakeFiles/path_planning.dir/src/vehicle.cpp.s
+
+CMakeFiles/path_planning.dir/src/vehicle.cpp.o.requires:
+
+.PHONY : CMakeFiles/path_planning.dir/src/vehicle.cpp.o.requires
+
+CMakeFiles/path_planning.dir/src/vehicle.cpp.o.provides: CMakeFiles/path_planning.dir/src/vehicle.cpp.o.requires
+	$(MAKE) -f CMakeFiles/path_planning.dir/build.make CMakeFiles/path_planning.dir/src/vehicle.cpp.o.provides.build
+.PHONY : CMakeFiles/path_planning.dir/src/vehicle.cpp.o.provides
+
+CMakeFiles/path_planning.dir/src/vehicle.cpp.o.provides.build: CMakeFiles/path_planning.dir/src/vehicle.cpp.o
+
+
+CMakeFiles/path_planning.dir/src/cost.cpp.o: CMakeFiles/path_planning.dir/flags.make
+CMakeFiles/path_planning.dir/src/cost.cpp.o: ../src/cost.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/j.cohen/path-planning/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/path_planning.dir/src/cost.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/path_planning.dir/src/cost.cpp.o -c /Users/j.cohen/path-planning/src/cost.cpp
+
+CMakeFiles/path_planning.dir/src/cost.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/path_planning.dir/src/cost.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/j.cohen/path-planning/src/cost.cpp > CMakeFiles/path_planning.dir/src/cost.cpp.i
+
+CMakeFiles/path_planning.dir/src/cost.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/path_planning.dir/src/cost.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/j.cohen/path-planning/src/cost.cpp -o CMakeFiles/path_planning.dir/src/cost.cpp.s
+
+CMakeFiles/path_planning.dir/src/cost.cpp.o.requires:
+
+.PHONY : CMakeFiles/path_planning.dir/src/cost.cpp.o.requires
+
+CMakeFiles/path_planning.dir/src/cost.cpp.o.provides: CMakeFiles/path_planning.dir/src/cost.cpp.o.requires
+	$(MAKE) -f CMakeFiles/path_planning.dir/build.make CMakeFiles/path_planning.dir/src/cost.cpp.o.provides.build
+.PHONY : CMakeFiles/path_planning.dir/src/cost.cpp.o.provides
+
+CMakeFiles/path_planning.dir/src/cost.cpp.o.provides.build: CMakeFiles/path_planning.dir/src/cost.cpp.o
+
+
 # Object files for target path_planning
 path_planning_OBJECTS = \
-"CMakeFiles/path_planning.dir/src/main.cpp.o"
+"CMakeFiles/path_planning.dir/src/main.cpp.o" \
+"CMakeFiles/path_planning.dir/src/vehicle.cpp.o" \
+"CMakeFiles/path_planning.dir/src/cost.cpp.o"
 
 # External object files for target path_planning
 path_planning_EXTERNAL_OBJECTS =
 
 path_planning: CMakeFiles/path_planning.dir/src/main.cpp.o
+path_planning: CMakeFiles/path_planning.dir/src/vehicle.cpp.o
+path_planning: CMakeFiles/path_planning.dir/src/cost.cpp.o
 path_planning: CMakeFiles/path_planning.dir/build.make
 path_planning: CMakeFiles/path_planning.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/jeremycohen/SelfDrivingCar/TERM_3/path-planning/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable path_planning"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/j.cohen/path-planning/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable path_planning"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/path_planning.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -100,6 +152,8 @@ CMakeFiles/path_planning.dir/build: path_planning
 .PHONY : CMakeFiles/path_planning.dir/build
 
 CMakeFiles/path_planning.dir/requires: CMakeFiles/path_planning.dir/src/main.cpp.o.requires
+CMakeFiles/path_planning.dir/requires: CMakeFiles/path_planning.dir/src/vehicle.cpp.o.requires
+CMakeFiles/path_planning.dir/requires: CMakeFiles/path_planning.dir/src/cost.cpp.o.requires
 
 .PHONY : CMakeFiles/path_planning.dir/requires
 
@@ -108,6 +162,6 @@ CMakeFiles/path_planning.dir/clean:
 .PHONY : CMakeFiles/path_planning.dir/clean
 
 CMakeFiles/path_planning.dir/depend:
-	cd /Users/jeremycohen/SelfDrivingCar/TERM_3/path-planning/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/jeremycohen/SelfDrivingCar/TERM_3/path-planning /Users/jeremycohen/SelfDrivingCar/TERM_3/path-planning /Users/jeremycohen/SelfDrivingCar/TERM_3/path-planning/build /Users/jeremycohen/SelfDrivingCar/TERM_3/path-planning/build /Users/jeremycohen/SelfDrivingCar/TERM_3/path-planning/build/CMakeFiles/path_planning.dir/DependInfo.cmake --color=$(COLOR)
+	cd /Users/j.cohen/path-planning/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/j.cohen/path-planning /Users/j.cohen/path-planning /Users/j.cohen/path-planning/build /Users/j.cohen/path-planning/build /Users/j.cohen/path-planning/build/CMakeFiles/path_planning.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/path_planning.dir/depend
 

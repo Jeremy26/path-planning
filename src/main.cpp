@@ -182,8 +182,8 @@ int main() {
   double ref_vel = 0.0; // Miles Per Hour
   double target_velocity = 49.5;
   int lane = 1; // Start Lane 1
-  //Vehicle ego = Vehicle(lane,0,ref_vel,0,"KL");
-  int ego=0;
+  Vehicle ego = Vehicle(lane,0,ref_vel,0,"KL");
+  //int ego=0;
   ifstream in_map_(map_file_.c_str(), ifstream::in);
 
   string line;
