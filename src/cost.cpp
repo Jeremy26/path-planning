@@ -94,9 +94,9 @@ map<string, float> get_helper_data(const Vehicle & vehicle, const vector<Vehicle
     Vehicle trajectory_last = trajectory[1];
     float intended_lane;
 
-    if (trajectory_last.state.compare("PLCL") == 0) {
+    if (trajectory_last.state.compare("PLCR") == 0) {
         intended_lane = trajectory_last.lane + 1;
-    } else if (trajectory_last.state.compare("PLCR") == 0) {
+    } else if (trajectory_last.state.compare("PLCL") == 0) {
         intended_lane = trajectory_last.lane - 1;
     } else {
         intended_lane = trajectory_last.lane;

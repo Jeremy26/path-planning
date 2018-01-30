@@ -25,7 +25,7 @@ Vehicle::Vehicle(int lane, double s, double v, double a, string state) {
 Vehicle::~Vehicle() {}
 
 
-vector<Vehicle> Vehicle::choose_next_state(map<int, vector<Vehicle>> predictions) {
+vector<Vehicle> Vehicle::choose_next_state(map<int, vector<Vehicle> > predictions) {
     /*
     Here you can implement the transition_function code from the Behavior Planning Pseudocode
     classroom concept. Your goal will be to return the best (lowest cost) trajectory corresponding
@@ -37,11 +37,11 @@ vector<Vehicle> Vehicle::choose_next_state(map<int, vector<Vehicle>> predictions
     OUTPUT: The the best (lowest cost) trajectory corresponding to the next ego vehicle state.
 
     */
-    vector<string> states = successor_states();
+    vector<string> states = successor_states(); // GENERATE SUCCESSOR STATES DEPENDING ON CURRENT EGO STATE
     float cost;
     vector<float> costs;
     vector<string> final_states;
-    vector<vector<Vehicle>> final_trajectories;
+    vector<vector<Vehicle> > final_trajectories;
 
     for (vector<string>::iterator it = states.begin(); it != states.end(); ++it) {
         vector<Vehicle> trajectory = generate_trajectory(*it, predictions);
@@ -69,15 +69,15 @@ vector<string> Vehicle::successor_states() {
     if(state.compare("KL") == 0) {
         states.push_back("PLCL");
         states.push_back("PLCR");
-    } else if (state.compare("PLCL") == 0) {
-        if (lane != lanes_available - 1) {
-            states.push_back("PLCL");
-            states.push_back("LCL");
-        }
     } else if (state.compare("PLCR") == 0) {
-        if (lane != 0) {
+        if (lane != lanes_available - 1) {
             states.push_back("PLCR");
             states.push_back("LCR");
+        }
+    } else if (state.compare("PLCL") == 0) {
+        if (lane != 0) {
+            states.push_back("PLCL");
+            states.push_back("LCL");
         }
     }
     //If state is "LCL" or "LCR", then just return "KL"

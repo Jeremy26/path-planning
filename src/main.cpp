@@ -265,6 +265,29 @@ int main() {
         bool too_close = false;
         bool left_free = true;
         bool right_free = true;
+        
+        typedef map<int, vector<Vehicle> > Map_SF_Preds;
+        Map_SF_Preds predictions;
+
+        for(int i=0; i<sensor_fusion.size();i++){
+          Vehicle sensored = Vehicle();
+          double d = sensor_fusion[i][6];
+          double s = sensor_fusion[i][5];
+          sensored.d = d;
+          sensored.s = s;
+          if(d>0){
+            if (d<4) sensored.lane =0;
+            else if (d<8) sensored.lane=1;
+            else if (d<12) sensored.lane =2;
+          }
+          predictions.insert(std::pair<int,vector<Vehicle>>(i,sensored.generate_predictions(30)));
+        }
+        ego.choose_next_state(predictions);
+        
+        //Map_SF_Preds::iterator pos;
+        //for (pos = predictions.begin(); pos != predictions.end(); pos++) {
+        //cout << "key: \"" << pos->first << "\" " << pos->second[0].s << endl;
+        //}
                 
         for (int i=0; i<sensor_fusion.size();i++){
           double vx = sensor_fusion[i][3];
@@ -284,7 +307,7 @@ int main() {
           // If detected vehicle in in LEFT LANE
           else if ((d<4*lane)&&(d>4*lane-4)){
             // If LEFT LANE is NOT FREE
-            if(((check_car_s>car_s) && (check_car_s - car_s <30))||((check_car_s<car_s)&&(car_s-check_car_s <20 )))
+            if(((check_car_s>car_s) && (check_car_s - car_s <30))||((check_car_s<car_s)&&(car_s-check_car_s <10 )))
             {
               left_free = false;
             }
@@ -293,7 +316,7 @@ int main() {
           else if ((d<4*lane+8)&&(d>4*lane+4)){
             
             // If RIGHT LANE is NOT FREE
-            if(((check_car_s>car_s) && (check_car_s - car_s <30))||((check_car_s<car_s)&&(car_s-check_car_s <20 )))
+            if(((check_car_s>car_s) && (check_car_s - car_s <30))||((check_car_s<car_s)&&(car_s-check_car_s <10 )))
             {
                 right_free = false;
             }
