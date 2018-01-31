@@ -183,7 +183,6 @@ int main() {
   double target_velocity = 49.5;
   int lane = 1; // Start Lane 1
   Vehicle ego = Vehicle(lane,0,ref_vel,0,"KL");
-  //int ego=0;
   ifstream in_map_(map_file_.c_str(), ifstream::in);
 
   string line;
@@ -268,7 +267,6 @@ int main() {
         
         typedef map<int, vector<Vehicle> > Map_SF_Preds;
         Map_SF_Preds predictions;
-
         for(int i=0; i<sensor_fusion.size();i++){
           Vehicle sensored = Vehicle();
           double d = sensor_fusion[i][6];
@@ -279,16 +277,18 @@ int main() {
             if (d<4) sensored.lane =0;
             else if (d<8) sensored.lane=1;
             else if (d<12) sensored.lane =2;
+            predictions.insert(std::pair<int,vector<Vehicle>>(i,sensored.generate_predictions(10)));
           }
-          predictions.insert(std::pair<int,vector<Vehicle>>(i,sensored.generate_predictions(30)));
         }
-        ego.choose_next_state(predictions);
-        
-        //Map_SF_Preds::iterator pos;
-        //for (pos = predictions.begin(); pos != predictions.end(); pos++) {
-        //cout << "key: \"" << pos->first << "\" " << pos->second[0].s << endl;
-        //}
-                
+        vector<Vehicle> result = ego.choose_next_state(predictions);
+        ego.prev_size = prev_size;
+        lane = result[0].lane;
+        ref_vel = 50;
+       // Map_SF_Preds::iterator pos;
+       // for (pos = predictions.begin(); pos != predictions.end(); pos++) {
+       // cout << "key: \"" << pos->first << "\" " << pos->second[0].s << endl;
+       // }
+                /*
         for (int i=0; i<sensor_fusion.size();i++){
           double vx = sensor_fusion[i][3];
           double vy = sensor_fusion[i][4];
@@ -336,6 +336,7 @@ int main() {
         else if (ref_vel<49.5){
           ref_vel+=.224;
         }
+        */
         
           // If previous size is almost empty, Use the car as starting reference
           if(prev_size <2){

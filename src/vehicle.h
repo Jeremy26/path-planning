@@ -37,8 +37,9 @@ public:
   double target_speed = 49.5;
 
   int lanes_available = 3;
+  int prev_size;
 
-  double max_acceleration = 10;
+  double max_acceleration = .224;
 
   int goal_lane;
 
@@ -51,13 +52,13 @@ public:
   */
   Vehicle();
   Vehicle(int lane, double s, double v, double a, string state);
-
   /**
   * Destructor
   */
   virtual ~Vehicle();
 
   vector<Vehicle> choose_next_state(map<int, vector<Vehicle>> predictions);
+  void print_vehicle();
 
   vector<string> successor_states();
 

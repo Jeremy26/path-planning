@@ -22,6 +22,16 @@ Vehicle::Vehicle(int lane, double s, double v, double a, string state) {
     this->state = state;
 }
 
+void Vehicle::print_vehicle()
+{
+    cout << "Lane :"<<this->lane<<endl;
+    cout<< "s :"<<this->s<<endl;
+    cout<< "d :"<<this->d<<endl;
+    cout<<"v :"<<this->v<<endl;
+    cout<<"a :"<<this->a<<endl;
+    cout<<"state : "<<this->state<<endl;
+}
+
 Vehicle::~Vehicle() {}
 
 
@@ -37,21 +47,25 @@ vector<Vehicle> Vehicle::choose_next_state(map<int, vector<Vehicle> > prediction
     OUTPUT: The the best (lowest cost) trajectory corresponding to the next ego vehicle state.
 
     */
+    cout<<"Enter choose next state"<<endl;
+    print_vehicle();
+
     vector<string> states = successor_states(); // GENERATE SUCCESSOR STATES DEPENDING ON CURRENT EGO STATE
     float cost;
     vector<float> costs;
     vector<string> final_states;
     vector<vector<Vehicle> > final_trajectories;
-
+    
     for (vector<string>::iterator it = states.begin(); it != states.end(); ++it) {
+        cout<<"ITERATOR STATES "<<*it<<endl;
         vector<Vehicle> trajectory = generate_trajectory(*it, predictions);
         if (trajectory.size() != 0) {
             cost = calculate_cost(*this, predictions, trajectory);
+            cout<<"COST "<<cost<<endl;
             costs.push_back(cost);
             final_trajectories.push_back(trajectory);
         }
     }
-
     vector<float>::iterator best_cost = min_element(begin(costs), end(costs));
     int best_idx = distance(begin(costs), best_cost);
     return final_trajectories[best_idx];
@@ -126,7 +140,7 @@ vector<double> Vehicle::get_kinematics(map<int, vector<Vehicle>> predictions, in
     
     new_accel = new_velocity - this->v; //Equation: (v_1 - v_0)/t = acceleration
     new_position = this->s + new_velocity + new_accel / 2.0;
-    return{new_position, new_velocity, new_accel};
+    return {new_position, new_velocity, new_accel};
     
 }
 
@@ -138,7 +152,7 @@ vector<Vehicle> Vehicle::keep_lane_trajectory(map<int, vector<Vehicle>> predicti
     vector<Vehicle> trajectory = {Vehicle(lane, this->s, this->v, this->a, state)};
     vector<double> kinematics = get_kinematics(predictions, this->lane);
     double new_s = kinematics[0];
-    double new_v = kinematics[1];
+    double new_v = this->prev_size*kinematics[1];
     double new_a = kinematics[2];
     trajectory.push_back(Vehicle(this->lane, new_s, new_v, new_a, "KL"));
     return trajectory;
