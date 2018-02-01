@@ -255,7 +255,7 @@ int main() {
           // Reference x,y,yaw states
           // Either we will reference the starting point as where the car is or at the previous paths end point
           double ref_x = car_x;
-          double ref_y = car_y;
+          double ref_y = car_y; 
           double ref_yaw = deg2rad(car_yaw);
           
         if (prev_size >0){
