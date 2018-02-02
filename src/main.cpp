@@ -280,10 +280,12 @@ int main() {
             predictions.insert(std::pair<int,vector<Vehicle>>(i,sensored.generate_predictions(10)));
           }
         }
-        vector<Vehicle> result = ego.choose_next_state(predictions);
-        ego.prev_size = prev_size;
-        lane = result[0].lane;
-        ref_vel = 50;
+        vector<Vehicle> suggested_vehicle = ego.choose_next_state(predictions);
+        //lane = suggested_vehicle[1].lane;
+        //ref_vel = suggested_vehicle[1].v;
+        ego.realize_next_state(suggested_vehicle);
+        lane = ego.lane;
+        ref_vel = ego.v;
        // Map_SF_Preds::iterator pos;
        // for (pos = predictions.begin(); pos != predictions.end(); pos++) {
        // cout << "key: \"" << pos->first << "\" " << pos->second[0].s << endl;

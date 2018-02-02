@@ -43,7 +43,7 @@ public:
 
   int goal_lane;
 
-  int goal_s;
+  int goal_s=6000;
 
   string state;
 

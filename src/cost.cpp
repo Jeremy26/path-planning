@@ -5,6 +5,7 @@
 #include <map>
 #include <math.h>
 
+// Here we define the weights of the costs.
 const float REACH_GOAL = pow(10, 6);
 const float EFFICIENCY = pow(10, 5);
 
