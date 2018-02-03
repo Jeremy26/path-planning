@@ -48,7 +48,7 @@ vector<Vehicle> Vehicle::choose_next_state(map<int, vector<Vehicle> > prediction
     OUTPUT: The the best (lowest cost) trajectory corresponding to the next ego vehicle state.
 
     */
-    this->print_vehicle("*********** This is the Current State of our Vehicle ***************");
+    this->print_vehicle("***************** This is the Current State of our Vehicle ***************");
 
     // First Step = Generate Successor States depending on Current State / Ex : Keep Lane / Prepare change left...
     vector<string> states = successor_states();
@@ -63,6 +63,9 @@ vector<Vehicle> Vehicle::choose_next_state(map<int, vector<Vehicle> > prediction
     // Array of array of vehicles : Each array has the vehicle and the same vehicle in the future
     vector<vector<Vehicle> > final_trajectories;
     
+    for (vector<string>::iterator it = states.begin(); it != states.end(); ++it) {
+        cout <<"STATES POSSIBLE FROM HERE "<<*it<<endl;
+    }
     // Iterate through all possible states (depending on the lane we are in)
     for (vector<string>::iterator it = states.begin(); it != states.end(); ++it) {
         // Print current state
@@ -105,14 +108,14 @@ vector<string> Vehicle::successor_states() {
         states.push_back("PLCR");
     } else if (state.compare("PLCR") == 0) {
         // If Go Right and we are not in right lane
-        if (lane != lanes_available - 1) {
+        if (this->lane != 2) {
             // Go right(LCR) or wait till it's safe to go right(PLCR)
             states.push_back("PLCR");
             states.push_back("LCR");
         }
     } else if (state.compare("PLCL") == 0) {
         // If go Left and we are not in left lane
-        if (lane != 0) {
+        if (this->lane != 0) {
             // Go Left (LCL) or wait till it's safe to go left (PLCL)
             states.push_back("PLCL");
             states.push_back("LCL");
@@ -143,7 +146,7 @@ vector<Vehicle> Vehicle::keep_lane_trajectory(map<int, vector<Vehicle>> predicti
     Generate a keep lane trajectory.
     */
     // Create a vehicle with the same  conditions of our own
-    vector<Vehicle> trajectory = {Vehicle(lane, this->s, this->v, this->a, state)};
+    vector<Vehicle> trajectory = {Vehicle(this->lane, this->s, this->v, this->a, this->state)};
     // Get kinematics
     vector<double> kinematics = get_kinematics(predictions, this->lane);
     double new_s = kinematics[0];
@@ -162,7 +165,7 @@ vector<Vehicle> Vehicle::prep_lane_change_trajectory(string state, map<int, vect
     double new_a;
     Vehicle vehicle_behind;
     int new_lane = this->lane + this->lane_direction[state];
-    vector<Vehicle> trajectory = {Vehicle(this->lane, this->s, this->v, this->a, state)};
+    vector<Vehicle> trajectory = {Vehicle(this->lane, this->s, this->v, this->a, this->state)};
     vector<double> curr_lane_new_kinematics = get_kinematics(predictions, this->lane);
 
     if (get_vehicle_behind(predictions, this->lane, vehicle_behind)) {
@@ -204,9 +207,9 @@ vector<Vehicle> Vehicle::lane_change_trajectory(string state, map<int, vector<Ve
             return trajectory;
         }
     }
-    trajectory.push_back(Vehicle(this->lane, this->s, this->v, this->a, state));
+    trajectory.push_back(Vehicle(this->lane, this->s, this->v, this->a, this->state));
     vector<double> kinematics = get_kinematics(predictions, new_lane);
-    trajectory.push_back(Vehicle(new_lane, kinematics[0], kinematics[1], kinematics[2], state));
+    trajectory.push_back(Vehicle(new_lane, kinematics[0], kinematics[1], kinematics[2], "KL"));
     return trajectory;
 }
 
@@ -225,24 +228,34 @@ vector<double> Vehicle::get_kinematics(map<int, vector<Vehicle>> predictions, in
     Vehicle vehicle_behind;
     if (get_vehicle_ahead(predictions, lane, vehicle_ahead)) {
         cout << "Vehicle Ahead detected : "<< vehicle_ahead.s - this->s <<" meters "<< endl;
-        cout << "LANE : "<<vehicle_ahead.lane<<endl;
+        cout << "In lane : "<<vehicle_ahead.lane<<endl;
        // this->nearest_ahead = vehicle_ahead.s - this->s;
         if (get_vehicle_behind(predictions, lane, vehicle_behind)) {
         cout << "Vehicle Behind Detected : " << this->s - vehicle_behind.s <<" meters" <<endl;
-        cout << "LANE : "<<vehicle_behind.lane<<endl;
+        cout << "In Lane : "<<vehicle_behind.lane<<endl;
 
             //this->nearest_behind = this->s - vehicle_behind.s;
             new_velocity = vehicle_ahead.v ; //must travel at the speed of traffic, regardless of preferred buffer
+            cout << " New Velocity : "<<new_velocity<<endl;
         } else {
             double max_velocity_in_front = (vehicle_ahead.s - this->s - this->preferred_buffer) + vehicle_ahead.v - 0.5 * (this->a);
             new_velocity = min(min(max_velocity_in_front, max_velocity_accel_limit), this->target_speed);
+            cout << " New Velocity : "<<new_velocity<<endl;
+
         }
     } else {
         new_velocity = min(max_velocity_accel_limit, this->target_speed);
+        cout << " New Velocity : "<<new_velocity<<endl;
     }
     
-    new_accel = (new_velocity - this->v); //Equation: (v_1 - v_0)/t = acceleration
+    //new_accel = (new_velocity - this->v); //Equation: (v_1 - v_0)/t = acceleration
+    if (new_velocity > this-> v) new_accel = -this->max_acceleration;
+    else new_accel = this->max_acceleration;
+    cout << " New Acceleration : "<<new_accel<<endl;
+
     new_position = this->s + new_velocity + new_accel / 2.0;
+    cout << " New Position : "<<new_position<<endl;
+
     return {new_position, new_velocity, new_accel};
 }
 

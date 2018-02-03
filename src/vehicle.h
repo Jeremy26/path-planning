@@ -43,7 +43,7 @@ public:
 
   int goal_lane;
 
-  int goal_s=7000;
+  double goal_s= 6945.554;
   float nearest_ahead=9999;
   float nearest_behind=9999;
   string state;

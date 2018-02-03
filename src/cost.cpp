@@ -8,10 +8,11 @@
 // Here we define the weights of the costs.
 const float EFFICIENCY = pow(10,3);
 const float COLLISION = pow(10,6);
-const float LANE_CHANGE = pow(10,2);
+const float LANE_CHANGE = pow(10,3);
 
 const float VEHICLE_RADIUS = 1.5; // model vehicle as circle to simplify collision detection
 
+// Changing lane is less comfortable than staying in our lane
 float lane_change_cost (const vector<Vehicle> & trajectory){
     if (trajectory[0].lane != trajectory[1].lane) return 1.0;
     else return 0.0;
