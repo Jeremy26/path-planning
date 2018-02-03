@@ -283,18 +283,20 @@ int main() {
           // Compute lateral position
           double d = sensor_fusion[i][6];
           sensored.d = d;
-          
+          vector<Vehicle> sensored_vec;
+
           if(d>0){
             if (d<=4) {sensored.lane =0;}
             else if (d<=8){sensored.lane=1;}
             else if (d<=12){sensored.lane =2;}
-            sensored.print_vehicle("Sensored Vehicle : ");
-            predictions.insert(std::pair<int,vector<Vehicle>>(i,sensored.generate_predictions(2)));
+            sensored_vec.push_back(sensored);
+            predictions.insert(std::pair<int,vector<Vehicle>>(i,sensored_vec)); // CANCEL PREDICTIONS
           }
         }
         Map_SF_Preds::iterator pos;
         for (pos = predictions.begin(); pos != predictions.end(); pos++) {
-            cout << "KEY : "<<pos->first <<" Lane : \"" << pos->second[0].lane << "\" Distance :" << pos->second[0].s - ego.s<< endl;
+            cout << "KEY : "<<pos->first <<" Lane : \"" << pos->second[0].lane <<endl;
+            cout << "\" Position : " << pos->second[0].s<<" SPEED : "<<pos->second[0].v<< endl;
         }
         vector<Vehicle> suggested_trajectory = ego.choose_next_state(predictions); // Lowest cost move
         ego.realize_next_state(suggested_trajectory); // Do the move

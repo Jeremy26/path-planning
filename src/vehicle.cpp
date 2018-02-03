@@ -221,7 +221,7 @@ vector<double> Vehicle::get_kinematics(map<int, vector<Vehicle>> predictions, in
     given other vehicle positions and accel/velocity constraints.
     */
     double max_velocity_accel_limit = this->max_acceleration + this->v;
-    double new_position;
+    double new_position = this->s;
     double new_velocity;
     double new_accel;
     Vehicle vehicle_ahead;
@@ -236,25 +236,20 @@ vector<double> Vehicle::get_kinematics(map<int, vector<Vehicle>> predictions, in
 
             //this->nearest_behind = this->s - vehicle_behind.s;
             new_velocity = vehicle_ahead.v ; //must travel at the speed of traffic, regardless of preferred buffer
-            cout << " New Velocity : "<<new_velocity<<endl;
         } else {
             double max_velocity_in_front = (vehicle_ahead.s - this->s - this->preferred_buffer) + vehicle_ahead.v - 0.5 * (this->a);
             new_velocity = min(min(max_velocity_in_front, max_velocity_accel_limit), this->target_speed);
-            cout << " New Velocity : "<<new_velocity<<endl;
 
         }
     } else {
         new_velocity = min(max_velocity_accel_limit, this->target_speed);
-        cout << " New Velocity : "<<new_velocity<<endl;
     }
     
     //new_accel = (new_velocity - this->v); //Equation: (v_1 - v_0)/t = acceleration
     if (new_velocity > this-> v) new_accel = -this->max_acceleration;
     else new_accel = this->max_acceleration;
-    cout << " New Acceleration : "<<new_accel<<endl;
 
-    new_position = this->s + new_velocity + new_accel / 2.0;
-    cout << " New Position : "<<new_position<<endl;
+    new_position += new_velocity*0.02 + new_accel*0.0004 / 2.0; // x = vt + 1/2 * at^2
 
     return {new_position, new_velocity, new_accel};
 }
