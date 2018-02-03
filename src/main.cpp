@@ -254,9 +254,9 @@ int main() {
 
           // Reference x,y,yaw states
           // Either we will reference the starting point as where the car is or at the previous paths end point
-          double ref_x = car_x;
-          double ref_y = car_y; 
-          double ref_yaw = deg2rad(car_yaw);
+        double ref_x = car_x;
+        double ref_y = car_y; 
+        double ref_yaw = deg2rad(car_yaw);
           
         if (prev_size >0){
           car_s =end_path_s;
@@ -277,17 +277,18 @@ int main() {
             if (d<4) sensored.lane =0;
             else if (d<8) sensored.lane=1;
             else if (d<12) sensored.lane =2;
-            predictions.insert(std::pair<int,vector<Vehicle>>(i,sensored.generate_predictions(10)));
+            predictions.insert(std::pair<int,vector<Vehicle>>(i,sensored.generate_predictions(20)));
           }
+        }
+        Map_SF_Preds::iterator pos;
+        for (pos = predictions.begin(); pos != predictions.end(); pos++) {
+        cout << "key: \"" << pos->first << "\" " << pos->second[0].s - ego.s << endl;
         }
         vector<Vehicle> suggested_vehicle = ego.choose_next_state(predictions); // Lowest cost move
         ego.realize_next_state(suggested_vehicle); // Do the move
         lane = ego.lane; // Value fed to spline
         ref_vel = ego.v; // Value fed to spline
-       // Map_SF_Preds::iterator pos;
-       // for (pos = predictions.begin(); pos != predictions.end(); pos++) {
-       // cout << "key: \"" << pos->first << "\" " << pos->second[0].s << endl;
-       // }
+        
                 /*
         for (int i=0; i<sensor_fusion.size();i++){
           double vx = sensor_fusion[i][3];

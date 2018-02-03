@@ -6,37 +6,58 @@
 #include <math.h>
 
 // Here we define the weights of the costs.
-const float REACH_GOAL = pow(10, 6);
-const float EFFICIENCY = pow(10, 5);
+const float EFFICIENCY = pow(10,3);
+const float COLLISION = pow(10,6);
+const float LANE_CHANGE = pow(10,2);
 
+const float VEHICLE_RADIUS = 1.5; // model vehicle as circle to simplify collision detection
 
-float goal_distance_cost(const Vehicle & vehicle, const vector<Vehicle> & trajectory, const map<int, vector<Vehicle>> & predictions, map<string, float> & data) {
-    /*
-    Cost increases based on distance of intended lane (for planning a lane change) and final lane of trajectory.
-    Cost of being out of goal lane also becomes larger as vehicle approaches goal distance.
-    */
-    float cost;
-    float distance = data["distance_to_goal"];
-    if (distance > 0) {
-        cost = 1 - 2*exp(-(abs(2.0*vehicle.goal_lane - data["intended_lane"] - data["final_lane"]) / distance));
-    } else {
-        cost = 1;
-    }
-    return cost;
+float lane_change_cost (const vector<Vehicle> & trajectory){
+    if (trajectory[0].lane != trajectory[1].lane) return 1.0;
+    else return 0.0;
 }
 
+float collision_cost(const Vehicle & vehicle, const vector<Vehicle> & trajectory, const map<int, vector<Vehicle>> & predictions ){
+  /*
+    Vehicle vehicle_ahead;
+    Vehicle vehicle_behind;
+
+    if (trajectory[1].get_vehicle_ahead(predictions, trajectory[1].lane, vehicle_ahead)) {
+        float delta_ahead = vehicle_ahead.s - this->s;
+        if (get_vehicle_behind(predictions, lane, vehicle_behind)) {
+            float delta_behind = this->s - vehicle_behind.s;
+        }
+        }
+    vector<double> vector_test = trajectory[1].get_kinematics(predictions, trajectory[1].lane);
+    float delta_ahead = trajectory[1].nearest_ahead;
+    float delta_behind = trajectory[1].nearest_behind;
+    float nearest = min(delta_ahead, delta_behind);
+    cout << "NEAREST VEHICLE IS "<<nearest <<endl;
+    if (nearest < 300*VEHICLE_RADIUS) return 1.0;
+    else return 0.0;*/
+    return 0;
+}
+/*
+float buffer_cost(traj, target_vehicle, delta, T, predictions){
+    
+//    Penalizes getting close to other vehicles.
+    
+    int nearest = nearest_approach_to_any_vehicle(traj, predictions)
+    return logistic(2*VEHICLE_RADIUS / nearest);
+}
+*/
 float inefficiency_cost(const Vehicle & vehicle, const vector<Vehicle> & trajectory, const map<int, vector<Vehicle>> & predictions, map<string, float> & data) {
     /*
     Cost becomes higher for trajectories with intended lane and final lane that have traffic slower than vehicle's target speed. 
     */
 
     float proposed_speed_intended = lane_speed(predictions, data["intended_lane"]);
-    if (proposed_speed_intended < 0) {
+    if (proposed_speed_intended < 0) { // If no vehicle found, lane_speed returns -1
         proposed_speed_intended = vehicle.target_speed;
     }
 
     float proposed_speed_final = lane_speed(predictions, data["final_lane"]);
-    if (proposed_speed_final < 0) {
+    if (proposed_speed_final < 0) { // If no vehicle found, lane_speed returns -1
         proposed_speed_final = vehicle.target_speed;
     }
     
@@ -69,16 +90,18 @@ float calculate_cost(const Vehicle & vehicle, const map<int, vector<Vehicle>> & 
     float cost = 0.0;
 
     //Add additional cost functions here.
-    vector< function<float(const Vehicle & , const vector<Vehicle> &, const map<int, vector<Vehicle>> &, map<string, float> &)>> cf_list = {goal_distance_cost, inefficiency_cost};
-    vector<float> weight_list = {REACH_GOAL, EFFICIENCY};
-    
-    for (int i = 0; i < cf_list.size(); i++) {
-        float new_cost = weight_list[i]*cf_list[i](vehicle, trajectory, predictions, trajectory_data);
+    //vector< function<float(const Vehicle & , const vector<Vehicle> &, const map<int, vector<Vehicle>> &, map<string, float> &)>> cf_list = {inefficiency_cost, collision_cost};
+    vector<float> weight_list = {EFFICIENCY, COLLISION, LANE_CHANGE};
+    vector<float> costs;
+    costs.push_back(inefficiency_cost(vehicle, trajectory, predictions, trajectory_data));
+    costs.push_back(collision_cost(vehicle, trajectory, predictions));
+    costs.push_back(lane_change_cost(trajectory));
+    for (int i = 0; i < costs.size(); i++) {
+        //float new_cost = weight_list[i]*cf_list[i](vehicle, trajectory, predictions, trajectory_data);
+        float new_cost = weight_list[i]*costs[i];
         cost += new_cost;
     }
-
     return cost;
-
 }
 
 map<string, float> get_helper_data(const Vehicle & vehicle, const vector<Vehicle> & trajectory, const map<int, vector<Vehicle>> & predictions) {
@@ -92,8 +115,8 @@ map<string, float> get_helper_data(const Vehicle & vehicle, const vector<Vehicle
     a lane change in the cost functions.
     */
     map<string, float> trajectory_data;
-    Vehicle trajectory_last = trajectory[1];
-    float intended_lane;
+    Vehicle trajectory_last = trajectory[1]; // Take the future trajectory
+    float intended_lane; // Intended lane will be this future trajectory +/- 1 lane depending on state
 
     if (trajectory_last.state.compare("PLCR") == 0) {
         intended_lane = trajectory_last.lane + 1;

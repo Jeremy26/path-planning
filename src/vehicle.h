@@ -43,8 +43,9 @@ public:
 
   int goal_lane;
 
-  int goal_s=6000;
-
+  int goal_s=7000;
+  float nearest_ahead=9999;
+  float nearest_behind=9999;
   string state;
 
   /**
@@ -58,7 +59,8 @@ public:
   virtual ~Vehicle();
 
   vector<Vehicle> choose_next_state(map<int, vector<Vehicle>> predictions);
-  void print_vehicle();
+  void print_vehicle(string name);
+  float get_nearest_vehicle();
 
   vector<string> successor_states();
 
