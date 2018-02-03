@@ -6,47 +6,28 @@
 #include <math.h>
 
 // Here we define the weights of the costs.
-const float EFFICIENCY = pow(10,3);
-const float COLLISION = pow(10,6);
-const float LANE_CHANGE = pow(10,3);
+const float EFFICIENCY = pow(10,1);
+const float COLLISION = pow(10,2);
+const float LANE_CHANGE = pow(10,0);
 
 const float VEHICLE_RADIUS = 1.5; // model vehicle as circle to simplify collision detection
 
 // Changing lane is less comfortable than staying in our lane
-float lane_change_cost (const vector<Vehicle> & trajectory){
-    if (trajectory[0].lane != trajectory[1].lane) return 1.0;
+float lane_change_cost (const Vehicle & vehicle, const vector<Vehicle> & trajectory){
+    if (vehicle.lane != trajectory[1].lane) return 1.0;
     else return 0.0;
 }
 
 float collision_cost(const Vehicle & vehicle, const vector<Vehicle> & trajectory, const map<int, vector<Vehicle>> & predictions ){
-  /*
-    Vehicle vehicle_ahead;
-    Vehicle vehicle_behind;
-
-    if (trajectory[1].get_vehicle_ahead(predictions, trajectory[1].lane, vehicle_ahead)) {
-        float delta_ahead = vehicle_ahead.s - this->s;
-        if (get_vehicle_behind(predictions, lane, vehicle_behind)) {
-            float delta_behind = this->s - vehicle_behind.s;
-        }
-        }
-    vector<double> vector_test = trajectory[1].get_kinematics(predictions, trajectory[1].lane);
+    
     float delta_ahead = trajectory[1].nearest_ahead;
+    cout << "DELTA AHEAD "<<delta_ahead <<endl;
     float delta_behind = trajectory[1].nearest_behind;
-    float nearest = min(delta_ahead, delta_behind);
-    cout << "NEAREST VEHICLE IS "<<nearest <<endl;
-    if (nearest < 300*VEHICLE_RADIUS) return 1.0;
-    else return 0.0;*/
-    return 0;
+    cout << "DELTA BEHIND " <<delta_behind <<endl;
+    if ((delta_ahead < 40*VEHICLE_RADIUS)) return 1.0;
+     return 0.0;
 }
-/*
-float buffer_cost(traj, target_vehicle, delta, T, predictions){
-    
-//    Penalizes getting close to other vehicles.
-    
-    int nearest = nearest_approach_to_any_vehicle(traj, predictions)
-    return logistic(2*VEHICLE_RADIUS / nearest);
-}
-*/
+
 float inefficiency_cost(const Vehicle & vehicle, const vector<Vehicle> & trajectory, const map<int, vector<Vehicle>> & predictions, map<string, float> & data) {
     /*
     Cost becomes higher for trajectories with intended lane and final lane that have traffic slower than vehicle's target speed. 
@@ -96,7 +77,7 @@ float calculate_cost(const Vehicle & vehicle, const map<int, vector<Vehicle>> & 
     vector<float> costs;
     costs.push_back(inefficiency_cost(vehicle, trajectory, predictions, trajectory_data));
     costs.push_back(collision_cost(vehicle, trajectory, predictions));
-    costs.push_back(lane_change_cost(trajectory));
+    costs.push_back(lane_change_cost(vehicle,trajectory));
     for (int i = 0; i < costs.size(); i++) {
         //float new_cost = weight_list[i]*cf_list[i](vehicle, trajectory, predictions, trajectory_data);
         float new_cost = weight_list[i]*costs[i];

@@ -267,43 +267,43 @@ int main() {
         
         typedef map<int, vector<Vehicle> > Map_SF_Preds;
         Map_SF_Preds predictions;
-        
+        ego.s = car_s;
         for(int i=0; i<sensor_fusion.size();i++){  
-          Vehicle sensored = Vehicle();
           // Compute Speed
           double vx = sensor_fusion[i][3];
           double vy = sensor_fusion[i][4];
           double check_speed = sqrt(vx*vx+vy*vy); // Compute car speed
-          sensored.v = check_speed;
+          vector<Vehicle> sensored_vec;
 
           // Compute longitudinal position
           double s = sensor_fusion[i][5];
-          s +=((double)prev_size*.02*check_speed); // Compute car s
-          sensored.s = s;
+          s +=((double)prev_size*0.02*check_speed); // Compute car s based on its speed
           // Compute lateral position
           double d = sensor_fusion[i][6];
-          sensored.d = d;
-          vector<Vehicle> sensored_vec;
-
+          float sensored_lane;
           if(d>0){
-            if (d<=4) {sensored.lane =0;}
-            else if (d<=8){sensored.lane=1;}
-            else if (d<=12){sensored.lane =2;}
+            if (d<=4) {sensored_lane =0;}
+            else if (d<=8){sensored_lane=1;}
+            else if (d<=12){sensored_lane =2;}
+            Vehicle sensored = Vehicle(sensored_lane, s,check_speed,0,"KL");
             sensored_vec.push_back(sensored);
+           // predictions.insert(std::pair<int,vector<Vehicle>>(i,sensored.generate_predictions(30)));
             predictions.insert(std::pair<int,vector<Vehicle>>(i,sensored_vec)); // CANCEL PREDICTIONS
           }
         }
         Map_SF_Preds::iterator pos;
         for (pos = predictions.begin(); pos != predictions.end(); pos++) {
             cout << "KEY : "<<pos->first <<" Lane : \"" << pos->second[0].lane <<endl;
-            cout << "\" Position : " << pos->second[0].s<<" SPEED : "<<pos->second[0].v<< endl;
+            cout << "\" Position : " << pos->second[0].s<< " Distance to us : "<<pos->second[0].s - car_s <<endl;
         }
+        
         vector<Vehicle> suggested_trajectory = ego.choose_next_state(predictions); // Lowest cost move
         ego.realize_next_state(suggested_trajectory); // Do the move
+        
         lane = ego.lane; // Value fed to spline
         ref_vel = ego.v; // Value fed to spline
         
-                /*
+              /*  
         for (int i=0; i<sensor_fusion.size();i++){
           double vx = sensor_fusion[i][3];
           double vy = sensor_fusion[i][4];
