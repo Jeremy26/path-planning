@@ -195,8 +195,7 @@ vector<Vehicle> Vehicle::lane_change_trajectory(string state, map<int, vector<Ve
     //Check if a lane change is possible (check if another vehicle occupies that spot).
     for (map<int, vector<Vehicle>>::iterator it = predictions.begin(); it != predictions.end(); ++it) {
         next_lane_vehicle = it->second[0];
-      //  cout<<"ABS "<<abs(next_lane_vehicle.s - this->s)<<endl;
-        if (abs(next_lane_vehicle.s - this->s )<10 && next_lane_vehicle.lane == new_lane) {
+        if (abs(next_lane_vehicle.s - this->s )==0 && next_lane_vehicle.lane == new_lane) {
             //If lane change is not possible, return empty trajectory.
             return trajectory;
         }

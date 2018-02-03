@@ -6,8 +6,8 @@
 #include <math.h>
 
 // Here we define the weights of the costs.
-const float EFFICIENCY = pow(10,1);
-const float COLLISION = pow(10,2);
+const float EFFICIENCY = pow(10,2);
+const float COLLISION = pow(10,1);
 const float LANE_CHANGE = pow(10,0);
 
 const float VEHICLE_RADIUS = 1.5; // model vehicle as circle to simplify collision detection
