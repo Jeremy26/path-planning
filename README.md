@@ -5,7 +5,7 @@ Self-Driving Car Engineer Nanodegree Program
 
 [//]: # (Image References)
 
-[image0]: ./report_images/PP.gif "GIF"
+[image0]: ./report_images/pp.mp4 "GIF"
 [image1]: ./report_images/fsm.png "FSM"
 [image2]: ./report_images/normalized.png "Normalizing"
 [image3]: ./report_images/internet.png "Normalizing"
