@@ -7,7 +7,7 @@
 
 // Here we define the weights of the costs.
 const float EFFICIENCY = pow(10,2);
-const float COLLISION = pow(10,2);
+const float COLLISION = pow(10,3);
 const float LANE_CHANGE = 0*pow(10,1);
 const float BUFFER = pow(10,1);
 

@@ -172,7 +172,7 @@ vector<Vehicle> Vehicle::prep_lane_change_trajectory(string state, map<int, vect
         vector<double> best_kinematics;
         vector<double> next_lane_new_kinematics = get_kinematics(predictions, new_lane);
         //Choose kinematics with lowest velocity.
-        if (next_lane_new_kinematics[1] < curr_lane_new_kinematics[1]) {
+        if (next_lane_new_kinematics[1] > curr_lane_new_kinematics[1]) {
             best_kinematics = next_lane_new_kinematics;
         } else {
             best_kinematics = curr_lane_new_kinematics;
@@ -196,7 +196,7 @@ vector<Vehicle> Vehicle::lane_change_trajectory(string state, map<int, vector<Ve
     //Check if a lane change is possible (check if another vehicle occupies that spot).
     for (map<int, vector<Vehicle>>::iterator it = predictions.begin(); it != predictions.end(); ++it) {
         next_lane_vehicle = it->second[0];
-        if (abs(next_lane_vehicle.s - this->s )<12 && next_lane_vehicle.lane == new_lane) {
+        if (abs(next_lane_vehicle.s - this->s )<15 && next_lane_vehicle.lane == new_lane) {
             //If lane change is not possible, return empty trajectory.
             return trajectory;
         }

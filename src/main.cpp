@@ -179,7 +179,7 @@ int main() {
   string map_file_ = "../data/highway_map.csv";
   // The max s value before wrapping around the track back to 0
   double max_s = 6945.554;
-  double ref_vel = 0.0; // Miles Per Hour
+  double ref_vel = 20; // Miles Per Hour
   double target_velocity = 49.5;
   int lane = 1; // Start Lane 1
   Vehicle ego = Vehicle(lane,0,ref_vel,0,"KL");
@@ -261,9 +261,7 @@ int main() {
         if (prev_size >0){
           car_s =end_path_s;
         }
-        bool too_close = false;
-        bool left_free = true;
-        bool right_free = true;
+
         
         typedef map<int, vector<Vehicle> > Map_SF_Preds;
         Map_SF_Preds predictions;
@@ -303,7 +301,10 @@ int main() {
         lane = ego.lane; // Value fed to spline
         ref_vel = ego.v; // Value fed to spline
         
-              /*  
+        /*
+        bool too_close = false;
+        bool left_free = true;
+        bool right_free = true;
         for (int i=0; i<sensor_fusion.size();i++){
           double vx = sensor_fusion[i][3];
           double vy = sensor_fusion[i][4];
@@ -351,8 +352,8 @@ int main() {
         else if (ref_vel<49.5){
           ref_vel+=.224;
         }
-        */
         
+        */
           // If previous size is almost empty, Use the car as starting reference
           if(prev_size <2){
 
