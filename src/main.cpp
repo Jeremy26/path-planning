@@ -287,8 +287,8 @@ int main() {
             else if (d<=12){sensored_lane =2;}
             Vehicle sensored = Vehicle(sensored_lane, s,check_speed,0,"KL");
             sensored_vec.push_back(sensored);
-           // predictions.insert(std::pair<int,vector<Vehicle>>(i,sensored.generate_predictions(30)));
-            predictions.insert(std::pair<int,vector<Vehicle>>(i,sensored_vec)); // CANCEL PREDICTIONS
+            predictions.insert(std::pair<int,vector<Vehicle>>(i,sensored.generate_predictions(1)));
+          //  predictions.insert(std::pair<int,vector<Vehicle>>(i,sensored_vec)); // CANCEL PREDICTIONS
           }
         }
         Map_SF_Preds::iterator pos;

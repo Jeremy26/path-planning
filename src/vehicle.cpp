@@ -71,11 +71,12 @@ vector<Vehicle> Vehicle::choose_next_state(map<int, vector<Vehicle> > prediction
     for (vector<string>::iterator it = states.begin(); it != states.end(); ++it) {
         // Call to Generate trajectory function that will output the vehicle & itself in the future
         vector<Vehicle> trajectory = generate_trajectory(*it, predictions);
-        trajectory[1].print_vehicle(*it);
-        trajectory[1].nearest_ahead = this->nearest_ahead;
-        trajectory[1].nearest_behind = this->nearest_behind;
+
         // If there is a trajectory
         if (trajectory.size() != 0) {
+            trajectory[1].print_vehicle(*it);
+            trajectory[1].nearest_ahead = this->nearest_ahead;
+            trajectory[1].nearest_behind = this->nearest_behind;
             // Calculate its cost depending on parameters
             cost = calculate_cost(*this, predictions, trajectory);
             // Print it
@@ -195,7 +196,7 @@ vector<Vehicle> Vehicle::lane_change_trajectory(string state, map<int, vector<Ve
     //Check if a lane change is possible (check if another vehicle occupies that spot).
     for (map<int, vector<Vehicle>>::iterator it = predictions.begin(); it != predictions.end(); ++it) {
         next_lane_vehicle = it->second[0];
-        if (abs(next_lane_vehicle.s - this->s )==0 && next_lane_vehicle.lane == new_lane) {
+        if (abs(next_lane_vehicle.s - this->s )<12 && next_lane_vehicle.lane == new_lane) {
             //If lane change is not possible, return empty trajectory.
             return trajectory;
         }
@@ -232,30 +233,31 @@ vector<double> Vehicle::get_kinematics(map<int, vector<Vehicle>> predictions, in
         cout << "Vehicle Ahead detected : "<< vehicle_ahead.s - this->s <<" meters "<< endl;
         ahead = true;
     }
-    if (ahead && vehicle_ahead.s - this->s <50){
+    /*
+    if (ahead && vehicle_ahead.s - this->s <30){
         new_velocity = vehicle_ahead.v;
     }
-    else new_velocity = this->target_speed;
-/*
-    if (ahead && (vehicle_ahead.s - this-> s) < 100) {
+    else new_velocity = this->target_speed;*/
+
+    if (ahead && vehicle_ahead.s - this->s <30){
         if (behind) {
             new_velocity = vehicle_ahead.v ; //must travel at the speed of traffic, regardless of preferred buffer
         }
         else {
-            //double max_velocity_in_front = (vehicle_ahead.s - this->s - this->preferred_buffer) + vehicle_ahead.v - 0.5 * (this->a);
-            //new_velocity = min(min(max_velocity_in_front, max_velocity_accel_limit), this->target_speed);
-            new_velocity = vehicle_ahead.v - 10;
+            double max_velocity_in_front = (vehicle_ahead.s - this->s - this->preferred_buffer) + vehicle_ahead.v - 0.5 * (this->a);
+            new_velocity = min(min(max_velocity_in_front, max_velocity_accel_limit), this->target_speed);
+           // new_velocity = vehicle_ahead.v - 10;
         }
     } 
-    else if(behind && !ahead){
-       // new_velocity = min(max_velocity_accel_limit, this->target_speed);
-       new_velocity = this->target_speed;
+    else {
+        new_velocity = min(max_velocity_accel_limit, this->target_speed);
+       //new_velocity = this->target_speed;
     }
-    */
     
-    //new_accel = (new_velocity - this->v)*.002; //Equation: (v_1 - v_0)/t = acceleration
-    if (new_velocity > this-> v) new_accel = this->max_acceleration;
-    else new_accel = - this->max_acceleration;
+    
+    new_accel = (new_velocity - this->v)*.002; //Equation: (v_1 - v_0)/t = acceleration
+ //   if (new_velocity > this-> v) new_accel = this->max_acceleration;
+ //   else new_accel = - this->max_acceleration;
     new_position += new_velocity*0.02 + new_accel*0.0004 / 2.0; // x = vt + 1/2 * at^2
 
     return {new_position, new_velocity, new_accel};

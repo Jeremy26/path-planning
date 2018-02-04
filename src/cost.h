@@ -13,6 +13,9 @@ float inefficiency_cost(const Vehicle & vehicle, const vector<Vehicle> & traject
 float lane_speed(const map<int, vector<Vehicle>> & predictions, int lane);
 float lane_change_cost (const Vehicle & vehicle,const vector<Vehicle> & trajectory);
 
+float buffer_cost(const Vehicle & vehicle, const vector<Vehicle> & trajectory, const map<int, vector<Vehicle>> & predictions);
+float logistic(float x);
+
 float collision_cost(const Vehicle & vehicle, const vector<Vehicle> & trajectory, const map<int, vector<Vehicle>> & predictions);
 
 map<string, float> get_helper_data(const Vehicle & vehicle, const vector<Vehicle> & trajectory, const map<int, vector<Vehicle>> & predictions);
