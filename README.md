@@ -12,6 +12,7 @@ Self-Driving Car Engineer Nanodegree Program
 
 ![Implementation][image0]
 
+(https://media.giphy.com/media/26wkK1hJK2tnn6uZy/giphy.gif)
 This project is implementing a Path Planner using a Finite State Machine to drive in a highway.
 Please refer to my PDF Report [here](urllink).
 
