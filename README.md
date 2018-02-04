@@ -1,6 +1,20 @@
 # CarND-Path-Planning-Project
 Self-Driving Car Engineer Nanodegree Program
-   
+
+### WELCOME TO THE PATH PLANNING PROJECT !!!
+
+[//]: # (Image References)
+
+[image0]: ./report_images/PP.gif "GIF"
+[image1]: ./report_images/fsm.png "FSM"
+[image2]: ./report_images/normalized.png "Normalizing"
+[image3]: ./report_images/internet.png "Normalizing"
+
+![Implementation][image0]
+
+This project is implementing a Path Planner using a Finite State Machine to drive in a highway.
+Please refer to my PDF Report [here](urllink).
+
 ### Simulator.
 You can download the Term3 Simulator which contains the Path Planning Project from the [releases tab (https://github.com/udacity/self-driving-car-sim/releases).
 
