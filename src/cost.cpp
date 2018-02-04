@@ -6,103 +6,23 @@
 #include <math.h>
 
 // Here we define the weights of the costs.
-const float EFFICIENCY = pow(10,2);
-const float COLLISION = pow(10,3);
-const float LANE_CHANGE = 0*pow(10,1);
+const float EFFICIENCY = pow(10,1.1);
+const float COLLISION = pow(10,2);
+const float LANE_CHANGE = pow(10,2);
 const float BUFFER = pow(10,1);
 
 const float VEHICLE_RADIUS = 1.5; // model vehicle as circle to simplify collision detection
 
-// Changing lane is less comfortable than staying in our lane
+// Changing lane is less comfortable than staying in our lane, we penalize changing for small speeds
 float lane_change_cost (const Vehicle & vehicle, const vector<Vehicle> & trajectory){
-    if (vehicle.lane != trajectory[1].lane) return 1.0;
-    else return 0.0;
-}
-/*
-float differentiate(float coefficients){
-    
-    //Calculates the derivative of a polynomial and returns
-    //the corresponding coefficients.
-    vector<float> new_cos;
-    for deg, prev_co in enumerate(coefficients[1:]):
-        new_cos.append((deg+1) * prev_co)
-    return new_cos
-}
-*/
-/*
-def to_equation(coefficients){
-
-    //Takes the coefficients of a polynomial and creates a function of
-    //time from them.
-    
-    def f(t):
-        total = 0.0
-        for i, c in enumerate(coefficients): 
-            total += c * t ** i
-        return total
-    return f
-}
-    */
-/*
-double total_accel_cost(const Vehicle & vehicle, const vector<Vehicle> & trajectory{
-    double s = trajectory[1].s;
-    double d = trajectory[1].d;
-    double t = 0.002;
-    double s_dot = differentiate(s);
-    double s_d_dot = differentiate(s_dot);
-    double a = to_equation(s_d_dot);
-    double total_acc = 0;
-    double dt = 0.002 / 100.0;
-
-    for (int i=0; i<100;i++){
-        t = dt * i
-        double acc = a(t)
-        total_acc += abs(acc*dt)
+    if (vehicle.v <25){
+        if (vehicle.lane != trajectory[1].lane) return 1.0;
     }
-    acc_per_second = total_acc / T;
-    return logistic(acc_per_second / EXPECTED_ACC_IN_ONE_SEC )
+    return 0.0;
 }
-*/
-/*
-def max_accel_cost(traj, target_vehicle, delta, T, predictions):
-    s, d, t = traj
-    s_dot = differentiate(s)
-    s_d_dot = differentiate(s_dot)
-    a = to_equation(s_d_dot)
-    all_accs = [a(float(T)/100 * i) for i in range(100)]
-    max_acc = max(all_accs, key=abs)
-    if abs(max_acc) > MAX_ACCEL: return 1
-    else: return 0
-    */
-/*
-def max_jerk_cost(traj, target_vehicle, delta, T, predictions):
-    s, d, t = traj
-    s_dot = differentiate(s)
-    s_d_dot = differentiate(s_dot)
-    jerk = differentiate(s_d_dot)
-    jerk = to_equation(jerk)
-    all_jerks = [jerk(float(T)/100 * i) for i in range(100)]
-    max_jerk = max(all_jerks, key=abs)
-    if abs(max_jerk) > MAX_JERK: return 1
-    else: return 0
 
-def total_jerk_cost(traj, target_vehicle, delta, T, predictions):
-    s, d, t = traj
-    s_dot = differentiate(s)
-    s_d_dot = differentiate(s_dot)
-    jerk = to_equation(differentiate(s_d_dot))
-    total_jerk = 0
-    dt = float(T) / 100.0
-    for i in range(100):
-        t = dt * i
-        j = jerk(t)
-        total_jerk += abs(j*dt)
-    jerk_per_second = total_jerk / T
-    return logistic(jerk_per_second / EXPECTED_JERK_IN_ONE_SEC )
-*/
-
+// Collision Cost if we're too close of a vehicle in our calculated trajectory
 float collision_cost(const Vehicle & vehicle, const vector<Vehicle> & trajectory, const map<int, vector<Vehicle>> & predictions ){
-    
     float delta_ahead = trajectory[1].nearest_ahead;
     cout << "DELTA AHEAD "<<delta_ahead <<endl;
     float delta_behind = trajectory[1].nearest_behind;
@@ -111,6 +31,7 @@ float collision_cost(const Vehicle & vehicle, const vector<Vehicle> & trajectory
     if ((nearest < 2*VEHICLE_RADIUS)) return 1.0;
      return 0.0;
 }
+
 float logistic(float x){
 //A function that returns a value between 0 and 1 for x in the 
     //range [0, infinity] and -1 to 1 for x in the range [-infinity, infinity].
@@ -118,6 +39,7 @@ float logistic(float x){
     return 2.0 / (1 + exp(-x)) - 1.0;
 }
 
+// Buffer cost returns a value close to 1 if we are too close from a vehicle.
 float buffer_cost(const Vehicle & vehicle, const vector<Vehicle> & trajectory, const map<int, vector<Vehicle>> & predictions){
     float delta_ahead = trajectory[1].nearest_ahead;
     float delta_behind = trajectory[1].nearest_behind;

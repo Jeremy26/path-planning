@@ -179,7 +179,7 @@ int main() {
   string map_file_ = "../data/highway_map.csv";
   // The max s value before wrapping around the track back to 0
   double max_s = 6945.554;
-  double ref_vel = 20; // Miles Per Hour
+  double ref_vel = 0; // Miles Per Hour
   double target_velocity = 49.5;
   int lane = 1; // Start Lane 1
   Vehicle ego = Vehicle(lane,0,ref_vel,0,"KL");
@@ -285,7 +285,7 @@ int main() {
             else if (d<=12){sensored_lane =2;}
             Vehicle sensored = Vehicle(sensored_lane, s,check_speed,0,"KL");
             sensored_vec.push_back(sensored);
-            predictions.insert(std::pair<int,vector<Vehicle>>(i,sensored.generate_predictions(1)));
+            predictions.insert(std::pair<int,vector<Vehicle>>(i,sensored.generate_predictions(2)));
           //  predictions.insert(std::pair<int,vector<Vehicle>>(i,sensored_vec)); // CANCEL PREDICTIONS
           }
         }
@@ -352,8 +352,8 @@ int main() {
         else if (ref_vel<49.5){
           ref_vel+=.224;
         }
-        
         */
+        
           // If previous size is almost empty, Use the car as starting reference
           if(prev_size <2){
 
