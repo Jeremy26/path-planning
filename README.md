@@ -3,7 +3,7 @@ Self-Driving Car Engineer Nanodegree Program
 
 ### WELCOME TO THE PATH PLANNING PROJECT !!!
 
-![GIF](https://media.giphy.com/media/26wkK1hJK2tnn6uZy/giphy-downsized-large.gif)
+![Video in Report-images](https://media.giphy.com/media/26wkK1hJK2tnn6uZy/giphy-downsized-large.gif)
 
 [//]: # (Image References)
 [image1]: ./report_images/fsm1.png "FSM"
