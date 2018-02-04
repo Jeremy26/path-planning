@@ -5,14 +5,13 @@ Self-Driving Car Engineer Nanodegree Program
 
 [//]: # (Image References)
 
-[image0]: ./report_images/pp.mp4 "GIF"
+[image0]: (https://media.giphy.com/media/26wkK1hJK2tnn6uZy/giphy.gif) "GIF"
 [image1]: ./report_images/fsm.png "FSM"
-[image2]: ./report_images/normalized.png "Normalizing"
-[image3]: ./report_images/internet.png "Normalizing"
+[image2]: ./report_images/pp.jpg "PP"
 
 ![Implementation][image0]
 
-(https://media.giphy.com/media/26wkK1hJK2tnn6uZy/giphy.gif)
+
 This project is implementing a Path Planner using a Finite State Machine to drive in a highway.
 Please refer to my PDF Report [here](urllink).
 
