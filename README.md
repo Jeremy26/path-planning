@@ -2,11 +2,10 @@
 Self-Driving Car Engineer Nanodegree Program
 
 ### WELCOME TO THE PATH PLANNING PROJECT !!!
-![image0](https://media.giphy.com/media/26wkK1hJK2tnn6uZy/giphy-downsized-large.gif)
+
+![GIF](https://media.giphy.com/media/26wkK1hJK2tnn6uZy/giphy-downsized-large.gif)
 
 [//]: # (Image References)
-
-[image0]: (https://media.giphy.com/media/26wkK1hJK2tnn6uZy/giphy-downsized-large.gif)
 [image1]: ./report_images/fsm1.png "FSM"
 [image2]: ./report_images/fsm2.png "FSM2"
 [image3]: ./report_images/drive.png "DRIVE"
@@ -14,15 +13,29 @@ Self-Driving Car Engineer Nanodegree Program
 
 ![Drive][image3]
 This project is implementing a Path Planner using a Finite State Machine to drive in a highway.
-Please refer to my PDF Report [here](https://github.com/Jeremy26/path-planning/blob/master/report.pdf).
+
+#### Please refer to my PDF Report [here](https://github.com/Jeremy26/path-planning/blob/master/report.pdf).
 
 I followed Finite State Machine implementations working two different ways:
 
+###### First One:
 The first one is a simple rule of privileging left lanes.
 ![FSM1][image1]
 
+```
+- Comment MAIN.CPP L298 to L302
+- Uncomment L304 & L356
+```
+
+###### Second One:
 The second one uses cost functions to choose the fastest lane.
 ![FSM2][image2]
+
+
+```
+- Comment /* L304 & L356 */
+- Uncomment MAIN.CPP L298 to L302
+```
 
 ### Simulator.
 You can download the Term3 Simulator which contains the Path Planning Project from the [releases tab (https://github.com/udacity/self-driving-car-sim/releases).
