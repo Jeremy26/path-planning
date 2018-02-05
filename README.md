@@ -3,16 +3,15 @@ Self-Driving Car Engineer Nanodegree Program
 
 ### WELCOME TO THE PATH PLANNING PROJECT !!!
 
-![Video in Report-images](https://media.giphy.com/media/26wkK1hJK2tnn6uZy/giphy-downsized-large.gif)
-
 [//]: # (Image References)
+[image0]: ./report_images/ppgif.gif "GIF"
 [image1]: ./report_images/fsm1.png "FSM"
 [image2]: ./report_images/fsm2.png "FSM2"
 [image3]: ./report_images/drive.png "DRIVE"
 
+![Video in Report-images][image0]
 
-![Drive][image3]
-This project is implementing a Path Planner using a Finite State Machine to drive in a highway.
+This project is implementing a Path Planner using a Finite State Machine to drive a car in a highway in C++.
 
 #### Please refer to my PDF Report [here](https://github.com/Jeremy26/path-planning/blob/master/report.pdf).
 
@@ -36,6 +35,12 @@ The second one uses cost functions to choose the fastest lane.
 - Comment /* L304 & L356 */
 - Uncomment MAIN.CPP L298 to L302
 ```
+
+## Results
+
+Both could finish the track in about 5:30 at average speed of 50mph.
+The first implementation is simple and clear; it allows the car to drive in what I call a handcoded way.
+The second implementation relies on costs/trajectories; it is more scallable but harder to implement and in this project not necessarly more efficient.
 
 ### Simulator.
 You can download the Term3 Simulator which contains the Path Planning Project from the [releases tab (https://github.com/udacity/self-driving-car-sim/releases).
