@@ -4,12 +4,11 @@ Self-Driving Car Engineer Nanodegree Program
 ### WELCOME TO THE PATH PLANNING PROJECT !!!
 
 [//]: # (Image References)
-[image0]: ./report_images/ppgif.gif "GIF"
 [image1]: ./report_images/fsm1.png "FSM"
 [image2]: ./report_images/fsm2.png "FSM2"
 [image3]: ./report_images/drive.png "DRIVE"
 
-![Video in Report-images][image0]
+[![VIDEO](report_images/pp_vid.png)](https://www.youtube.com/watch?v=VbuK4NF34Q4 "Path Planning")
 
 This project is implementing a Path Planner using a Finite State Machine to drive a car in a highway in C++.
 
